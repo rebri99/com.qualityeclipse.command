@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+
+<plugin>
+    <!-- Command 정의 -->
+    <extension
+          point="org.eclipse.ui.commands">
+        <command
+              id="com.qualityeclipse.command.openFolder"
+              name="Open Folder"
+              description="Open the selected project's folder in file explorer"/>
+        <command
+              id="com.qualityeclipse.command.openTerminal"
+              name="Open Terminal"
+              description="Open the selected project's path in terminal"/>
+    </extension>
+
+    <!-- Command 핸들러 연결 -->
+    <extension
+          point="org.eclipse.ui.handlers">
+        <handler
+              commandId="com.qualityeclipse.command.openFolder"
+              class="com.qualityeclipse.command.handlers.OpenFolderHandler"/>
+        <handler
+              commandId="com.qualityeclipse.command.openTerminal"
+              class="com.qualityeclipse.command.handlers.OpenTerminalHandler"/>
+    </extension>
+
+    <!-- 메뉴(UI) 연결: 프로젝트 우클릭 메뉴에 표시 -->
+    <extension
+          point="org.eclipse.ui.menus">
+        <menuContribution
+              locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+            <menu
+                  label="Command Here"
+                  id="com.qualityeclipse.command.menu"
+                  icon="icons/command-here.png">
+
+                <!-- 메뉴 표시 조건 -->
+                <visibleWhen>
+                    <with variable="selection">
+                        <count value="1"/>
+                        <iterate>
+                            <adapt type="org.eclipse.core.resources.IProject"/>
+                        </iterate>
+                    </with>
+                </visibleWhen>
+
+                <command
+                      commandId="com.qualityeclipse.command.openFolder"
+                      label="Open Folder"
+                      icon="icons/folder.png"
+                      style="push"/>
+                <command
+                      commandId="com.qualityeclipse.command.openTerminal"
+                      label="Open Terminal"
+                      icon="icons/terminal.png"
+                      style="push"/>
+            </menu>
+        </menuContribution>
+    </extension>
+</plugin>
